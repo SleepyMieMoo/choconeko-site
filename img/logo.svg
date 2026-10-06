@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ChocoNeko cat logo">
+  <path d="M10 26 L14 6 L28 18 Z" fill="#6C442A" stroke="#442A1A" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M54 26 L50 6 L36 18 Z" fill="#6C442A" stroke="#442A1A" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M14 22 L16 12 L23 18 Z" fill="#F3E8D6"/>
+  <path d="M50 22 L48 12 L41 18 Z" fill="#F3E8D6"/>
+  <rect x="8" y="16" width="48" height="42" rx="20" fill="#5C3A24" stroke="#442A1A" stroke-width="2"/>
+  <ellipse cx="24" cy="36" rx="3.5" ry="4.5" fill="#FFF4E6"/>
+  <ellipse cx="40" cy="36" rx="3.5" ry="4.5" fill="#FFF4E6"/>
+  <path d="M29 44 Q32 47 35 44" fill="none" stroke="#FFF4E6" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M30.5 41 L33.5 41 L32 42.8 Z" fill="#FFC800"/>
+</svg>

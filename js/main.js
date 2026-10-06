@@ -1,0 +1,99 @@
+(function () {
+  // Mobile nav toggle
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if (toggle && nav) {
+    var setOpen = function (open) {
+      nav.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    var isOpen = function () { return nav.classList.contains("open"); };
+
+    toggle.addEventListener("click", function () {
+      setOpen(!isOpen());
+    });
+    nav.addEventListener("click", function (e) {
+      if (e.target.closest && e.target.closest("a")) setOpen(false);
+    });
+    // Close on Escape and send focus back to the Menu button
+    document.addEventListener("keydown", function (e) {
+      if ((e.key === "Escape" || e.key === "Esc") && isOpen()) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    // Close on a tap/click outside the menu. If focus was inside the menu,
+    // return it to the Menu button (unless the tap landed on another control).
+    var refocusToggle = false;
+    document.addEventListener("pointerdown", function (e) {
+      if (!isOpen()) return;
+      if (nav.contains(e.target) || toggle.contains(e.target)) return;
+      refocusToggle = nav.contains(document.activeElement);
+      setOpen(false);
+    });
+    document.addEventListener("click", function (e) {
+      if (!refocusToggle) return;
+      refocusToggle = false;
+      if (!(e.target.closest && e.target.closest("a, button, input, select, textarea, [tabindex]"))) toggle.focus();
+    });
+    // Close if keyboard focus leaves the menu (e.g. tabbing past the last link)
+    nav.addEventListener("focusout", function (e) {
+      if (!isOpen()) return;
+      var next = e.relatedTarget;
+      if (next && !nav.contains(next) && next !== toggle) setOpen(false);
+    });
+  }
+
+  // Footer year
+  var year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
+
+  // Team cards from js/members.js
+  var grid = document.getElementById("team-grid");
+  var members = window.CHOCONEKO_MEMBERS || [];
+  if (!grid || !members.length) return;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text) node.textContent = text;
+    return node;
+  }
+  function link(href, text, external) {
+    var a = el("a", "chip-link", text);
+    a.href = href;
+    if (external) { a.target = "_blank"; a.rel = "noopener"; }
+    return a;
+  }
+
+  members.forEach(function (m) {
+    var card = el("article", "member-card" + (m.lead ? " is-lead" : "") + (m.placeholder ? " is-placeholder" : ""));
+    card.id = "member-" + m.id;
+
+    var avatar = el("div", "avatar", m.placeholder ? "?" : m.name.charAt(0));
+    avatar.setAttribute("aria-hidden", "true");
+    card.appendChild(avatar);
+    card.appendChild(el("h3", "", m.name));
+    card.appendChild(el("span", "role", m.role));
+    if (m.blurb) card.appendChild(el("p", "", m.blurb));
+
+    var links = el("div", "card-links");
+    if (m.page) links.appendChild(link(m.page, "Profile"));
+    if (m.website) links.appendChild(link(m.website, "Personal site \u2197", true));
+    if (!m.page && !m.website) links.appendChild(link("#member-" + m.id, "Link to this card"));
+    card.appendChild(links);
+
+    grid.appendChild(card);
+  });
+
+  // Highlight + scroll to a linked card (cards are injected after load)
+  function focusHash() {
+    var prev = grid.querySelector(".is-targeted");
+    if (prev) prev.classList.remove("is-targeted");
+    if (location.hash.indexOf("#member-") !== 0) return;
+    var target = document.getElementById(location.hash.slice(1));
+    if (target) { target.classList.add("is-targeted"); target.scrollIntoView(); }
+  }
+  focusHash();
+  window.addEventListener("hashchange", focusHash);
+})();
