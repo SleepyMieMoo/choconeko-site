@@ -41,11 +41,11 @@ How the colours fit together:
 2. Run the sync script with the path to that file:
 
    ```sh
-   python3 tools/sync-themes.py /path/to/the-game-theme-file --check
+   python3 tools/sync-themes.py /path/to/the-game-theme-file
    ```
 
-   It rewrites `css/themes.css`, updates the System `theme-color` tags in the HTML pages and prints a contrast report for every theme. It needs only Python 3, with no extra packages.
-3. Check the contrast report. It must end with `contrast: all pairs pass WCAG AA` (with `--check` the script exits with an error otherwise). If a pair fails, adjust how the derived site colours are calculated in `site_colors()` in the script. Never change the game's own colour values here.
+   It rewrites `css/themes.css`, updates the list of theme ids in each page's early `<head>` script and the System `theme-color` tags, and prints a contrast report for every theme. It needs only Python 3, with no extra packages.
+3. Check the contrast report. It must end with `contrast: all pairs pass WCAG AA`. Running the same command with `--check` writes nothing and exits with an error if contrast fails or a generated file is out of date. If a pair fails, adjust how the derived site colours are calculated in `site_colors()` in the script. Never change the game's own colour values here.
 4. Preview the site, pick the new or changed theme in the Theme menu and look at the home page, a member page and the 404 page at desktop and phone widths.
 5. Commit `css/themes.css` together with any HTML files the script updated, with a message such as `Sync themes: add Caramel`, then push to `main`.
 

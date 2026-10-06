@@ -1,45 +1,28 @@
 #!/usr/bin/env python3
-"""Regenerate css/themes.css from the game's UI theme definitions.
+"""Regenerate the site's theme files from the game's UI theme definitions.
 
 Usage:
-    python3 tools/sync-themes.py PATH/TO/THEME-FILE.luau [--check]
+    python3 tools/sync-themes.py PATH/TO/THEME-FILE.luau           write the files
+    python3 tools/sync-themes.py PATH/TO/THEME-FILE.luau --check   compare only
 
-Plain Python 3, no dependencies. Run it from anywhere; it writes into the
-site folder that contains this script.
+Plain Python 3, no dependencies. Run it from anywhere; it works on the site
+folder that contains this script.
 
-What it does
-  1. Reads a local copy of the game's theme definitions (a .luau file).
-  2. Writes css/themes.css: one CSS custom-property block per theme, plus the
-     "System" mapping (dark device -> the game's default theme, light device ->
-     the LIGHT_SYSTEM_THEME below) and the theme list used by the picker.
-  3. Updates the two <meta name="theme-color"> tags (System defaults) in the
-     site's HTML pages.
-  4. Prints a WCAG contrast report for every theme. With --check it exits
-     with status 1 if any pair is below its target.
+What it generates
+  * css/themes.css: one CSS custom-property block per theme, the "System"
+    mapping (dark device -> the game's default theme, light device ->
+    LIGHT_SYSTEM_THEME below) and the theme list used by the picker.
+  * In every HTML page: the early inline <head> script's list of valid theme
+    ids, and the two System <meta name="theme-color"> tags.
+It also prints a WCAG contrast report for every theme.
 
-Expected input format (keep it simple; this is a small pattern-based parser):
-  * Theme palettes are top-level tables:
-        local SOME_NAME: ThemePalette = {
-            panelBg = Color3.fromRGB(20, 14, 12),
-            ...
-            accentGradient = SHARED_ACCENT,      -- a reference to another local table
-        }
-    Colours may be Color3.fromRGB(r, g, b), Color3.new(r, g, b) (0..1) or
-    Color3.fromHex("#RRGGBB"). Nested tables ({ Start = ..., Center = ... })
-    and references to other `local NAME = { ... }` tables are supported.
-  * The theme ids and their order come from `UITheme.THEME_ORDER = { "Id", ... }`
-    (falls back to the `export type ThemeId = "A" | "B"` union).
-  * Display names come from `UITheme.THEME_LABELS = { Id = "Name", ... }`.
-    A theme without a label gets a tidy name from its id ("DarkChoco" -> "Dark Choco").
-  * Which table belongs to which id comes from `getPalette`:
-        if themeId == "Id" then return TABLE_NAME end
-    with the final `return TABLE_NAME` as the fallback. If that is missing, the
-    id is matched to a table named like it ("DarkChoco" -> DARK_CHOCO).
-  * The default theme is the string returned at the end of `resolveThemeId`.
+--check writes nothing. It exits with status 1 if a generated file would
+differ from the one on disk, or if any contrast pair is below its target.
 
-Required palette fields: panelBg, elevatedBg, buttonBg, accordionHeaderBg,
-navActiveBg, navActiveText, borderColor, textColor, textMuted and
-accentGradient.Center (accentGradient.Start is optional).
+Input: the parser is small and pattern-based. It expects one table of
+Color3.fromRGB(...) values per theme, plus the game's theme order, display
+labels, id-to-table lookup and default theme. If the game's file changes shape
+and the script stops with an error, update parse_theme_file().
 """
 import hashlib
 import pathlib
@@ -415,22 +398,50 @@ def main(argv):
     out.append("@media (prefers-color-scheme: light) {")
     out.append(block(':root:not([data-theme]),\n  :root[data-theme="system"]', l["vars"], l["dark"], "  "))
     out.append("}")
-    OUT.write_text("\n".join(out) + "\n", encoding="utf-8")
+    outputs = {OUT: "\n".join(out) + "\n"}
 
     # System defaults for the browser UI colour before JavaScript runs
     metas = (f'<meta name="theme-color" content="{hexc(d["vars"]["deep"])}" media="(prefers-color-scheme: dark)">\n'
              f'  <meta name="theme-color" content="{hexc(l["vars"]["deep"])}" media="(prefers-color-scheme: light)">')
-    pat = re.compile(r'<meta name="theme-color"[^>]*media="\(prefers-color-scheme: dark\)">\s*'
-                     r'<meta name="theme-color"[^>]*media="\(prefers-color-scheme: light\)">')
+    meta_pat = re.compile(r'<meta name="theme-color"[^>]*media="\(prefers-color-scheme: dark\)">\s*'
+                          r'<meta name="theme-color"[^>]*media="\(prefers-color-scheme: light\)">')
+    # Early <head> script: applies the saved theme before CSS paints. A saved id
+    # that is not in this list (e.g. a removed theme) falls back to System.
+    ids = " ".join(["system"] + [t["slug"] for t in themes])
+    inline = ('<script>(function(){var ok=" ' + ids + ' ",t;'
+              'try{t=localStorage.getItem("choconeko-theme")}catch(e){}'
+              'document.documentElement.setAttribute("data-theme",'
+              't&&ok.indexOf(" "+t+" ")>=0?t:"system")})();</script>')
+    script_pat = re.compile(r'<script>\(function\(\)\{var [^<]*?"choconeko-theme"[^<]*?</script>')
+    problems = []
     for html in sorted(SITE.rglob("*.html")):
         s = html.read_text(encoding="utf-8")
-        new = pat.sub(metas, s)
-        if new != s:
-            html.write_text(new, encoding="utf-8")
-            print(f"updated theme-color in {html.relative_to(SITE)}")
+        if "themes.css" not in s:
+            continue
+        new, n_script = script_pat.subn(lambda m: inline, s)
+        new, n_meta = meta_pat.subn(lambda m: metas, new)
+        if n_script != 1 or n_meta != 1:
+            problems.append(f"{html.relative_to(SITE)}: expected one early theme script and one "
+                            f"pair of theme-color tags, found {n_script} and {n_meta}")
+        outputs[html] = new
 
-    print(f"wrote {OUT.relative_to(SITE)}: {len(themes)} themes, default {default}, "
-          f"system light {LIGHT_SYSTEM_THEME}")
+    check = "--check" in argv
+    stale = []
+    for path, content in outputs.items():
+        current = path.read_text(encoding="utf-8") if path.exists() else None
+        if current == content:
+            continue
+        stale.append(path.relative_to(SITE))
+        if not check:
+            path.write_text(content, encoding="utf-8")
+    if check:
+        print(f"check: {len(outputs)} generated files compared, "
+              + (f"OUT OF DATE: {', '.join(map(str, stale))}" if stale else "all up to date"))
+    else:
+        print(f"{len(themes)} themes, default {default}, system light {LIGHT_SYSTEM_THEME}; "
+              + (f"updated: {', '.join(map(str, stale))}" if stale else "no files changed"))
+    for msg in problems:
+        print(f"error: {msg}")
     fails = 0
     for t in themes:
         rows = contrast_rows(t["vars"], t["dark"])
@@ -446,7 +457,9 @@ def main(argv):
         for n in t["notes"]:
             print(f"    adjusted: {n}")
     print(f"\ncontrast: {'all pairs pass WCAG AA' if not fails else f'{fails} pair(s) below target'}")
-    return 1 if (fails and "--check" in argv) else 0
+    if problems:
+        return 1
+    return 1 if (check and (fails or stale)) else 0
 
 
 if __name__ == "__main__":

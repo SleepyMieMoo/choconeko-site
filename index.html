@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#1C1410" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#DAC6AC" media="(prefers-color-scheme: light)">
   <!-- Apply the saved theme before CSS paints (see js/main.js) -->
-  <script>(function(){var t;try{t=localStorage.getItem("choconeko-theme")}catch(e){}document.documentElement.setAttribute("data-theme",/^[a-z0-9-]{1,40}$/.test(t||"")?t:"system")})();</script>
+  <script>(function(){var ok=" system dark-choco chocolate dark light vanilla lemon peach strawberry mint blueberry lavender ",t;try{t=localStorage.getItem("choconeko-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t&&ok.indexOf(" "+t+" ")>=0?t:"system")})();</script>
   <meta property="og:title" content="ChocoNeko">
   <meta property="og:description" content="A chocolate-and-cat themed Roblox hub game. In development, coming soon.">
   <meta property="og:type" content="website">

@@ -56,22 +56,25 @@
       select.appendChild(opt);
     });
     select.addEventListener("change", function () {
-      save(select.value);
-      apply(select.value);
+      current = select.value;
+      save(current);
+      apply(current);
     });
     if (picker) picker.hidden = false;
   }
-  apply(read());
+  // The current choice, kept in memory so it survives even when storage is blocked.
+  var current = read();
+  apply(current);
 
   // System mode: CSS already follows the device; keep theme-color in step.
   if (mq) {
-    var onSchemeChange = function () { if (read() === "system") apply("system"); };
+    var onSchemeChange = function () { if (current === "system") apply("system"); };
     if (mq.addEventListener) mq.addEventListener("change", onSchemeChange);
     else if (mq.addListener) mq.addListener(onSchemeChange);
   }
   // Keep other open tabs in step.
   window.addEventListener("storage", function (e) {
-    if (e.key === KEY) apply(read());
+    if (e.key === KEY) { current = read(); apply(current); }
   });
 })();
 
