@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Page not found · ChocoNeko</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#4A2E1C">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#1C1410" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#DAC6AC" media="(prefers-color-scheme: light)">
+  <!-- Apply the saved theme before CSS paints (see js/main.js) -->
+  <script>(function(){var t;try{t=localStorage.getItem("choconeko-theme")}catch(e){}document.documentElement.setAttribute("data-theme",/^[a-z0-9-]{1,40}$/.test(t||"")?t:"system")})();</script>
   <link rel="icon" href="/choconeko-site/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/choconeko-site/css/themes.css">
   <link rel="stylesheet" href="/choconeko-site/css/style.css">
   <style>
     body { min-height: 100vh; display: flex; flex-direction: column; }
@@ -20,6 +25,10 @@
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="/choconeko-site/"><img src="/choconeko-site/img/logo.svg" alt="" width="40" height="40">ChocoNeko</a>
+      <div class="theme-picker" hidden>
+        <label for="theme-select">Theme</label>
+        <span class="select-wrap"><select id="theme-select"><option value="system">System (match device)</option></select></span>
+      </div>
     </div>
   </header>
 
@@ -42,5 +51,7 @@
       <p class="footer-small">© 2026 ChocoNeko. In development, coming soon. Not affiliated with or endorsed by Roblox Corporation.</p>
     </div>
   </footer>
+
+  <script src="/choconeko-site/js/main.js"></script>
 </body>
 </html>

@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SleepyMie · ChocoNeko team</title>
   <meta name="description" content="SleepyMie leads ChocoNeko, a Roblox game in development.">
-  <meta name="theme-color" content="#4A2E1C">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#1C1410" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#DAC6AC" media="(prefers-color-scheme: light)">
+  <!-- Apply the saved theme before CSS paints (see js/main.js) -->
+  <script>(function(){var t;try{t=localStorage.getItem("choconeko-theme")}catch(e){}document.documentElement.setAttribute("data-theme",/^[a-z0-9-]{1,40}$/.test(t||"")?t:"system")})();</script>
   <meta property="og:title" content="SleepyMie · ChocoNeko team">
   <meta property="og:description" content="SleepyMie leads ChocoNeko, a Roblox game in development.">
   <meta property="og:type" content="website">
@@ -16,6 +20,7 @@
   <meta property="og:image:alt" content="ChocoNeko cat logo and wordmark on a chocolate background">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/themes.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -25,14 +30,20 @@
     <div class="wrap">
       <a class="brand" href="../index.html"><img src="../img/logo.svg" alt="" width="40" height="40">ChocoNeko</a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-      <nav id="site-nav" class="site-nav" aria-label="Main">
-        <ul>
-          <li><a href="../index.html#home">Home</a></li>
-          <li><a href="../index.html#about">About</a></li>
-          <li><a href="../index.html#team">Team</a></li>
-          <li><a href="../index.html#links">Links</a></li>
-        </ul>
-      </nav>
+      <div id="site-nav" class="site-nav">
+        <nav aria-label="Main">
+          <ul>
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="../index.html#team">Team</a></li>
+            <li><a href="../index.html#links">Links</a></li>
+          </ul>
+        </nav>
+        <div class="theme-picker" hidden>
+          <label for="theme-select">Theme</label>
+          <span class="select-wrap"><select id="theme-select"><option value="system">System (match device)</option></select></span>
+        </div>
+      </div>
     </div>
   </header>
 
