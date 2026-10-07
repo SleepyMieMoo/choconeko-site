@@ -1,0 +1,47 @@
+{
+  "_about": "ChocoNeko public facts: the single source for the website, Koko (Discord) and SleepyMie's portfolio. Only public-safe info goes here.",
+  "updated": "2026-10-07",
+  "name": "ChocoNeko",
+  "status": {
+    "label": "In development",
+    "launched": false,
+    "short": "ChocoNeko is in development and hasn't launched yet.",
+    "play_now": false
+  },
+  "tagline": "A chocolate-and-cat themed Roblox hub game, in development.",
+  "places": [
+    {
+      "name": "Hub"
+    },
+    {
+      "name": "Incrediblox",
+      "note": "music mixing, current focus"
+    },
+    {
+      "name": "Cooking"
+    },
+    {
+      "name": "TD Survival",
+      "note": "on a break"
+    }
+  ],
+  "team": [
+    {
+      "name": "SleepyMie",
+      "role": "Lead",
+      "website": "https://sleepymiemoo.github.io"
+    }
+  ],
+  "team_note": "More team members coming soon!",
+  "links": {
+    "website": "https://sleepymiemoo.github.io/choconeko-site/",
+    "roblox": {
+      "url": "https://www.roblox.com/games/129419556998762/Choco-Neko",
+      "label": "View on Roblox (in development)"
+    },
+    "youtube": "https://www.youtube.com/@ChocoNekoStudios",
+    "support_email": "kokonutsupport@gmail.com",
+    "discord_invite": "https://discord.gg/d4KFuRJRCx",
+    "bug_tracker": "https://github.com/SleepyMieMoo/choconeko-qa/issues"
+  }
+}

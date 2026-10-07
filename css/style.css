@@ -187,7 +187,7 @@ h2 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1.15; margin: 0 0 1re
 .team-note { margin-top: 1.4rem; font-size: .95rem; color: var(--muted); }
 
 /* ---------- Links ---------- */
-.link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.6rem; }
+.link-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.6rem; }
 .link-card {
   display: block; text-decoration: none; color: var(--text);
   background: var(--panel); border: 2px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.3rem;
@@ -236,6 +236,7 @@ h2 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); line-height: 1.15; margin: 0 0 1re
   .site-nav .theme-picker { border-top: 1px solid var(--border); padding-top: .85rem; }
   .site-nav .theme-picker .select-wrap { flex: 1; }
   .site-nav .theme-picker select { width: 100%; }
+  .link-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
   .steps, .link-grid { grid-template-columns: 1fr; }

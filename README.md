@@ -19,8 +19,13 @@ This is a plain static site: HTML, CSS and a little vanilla JavaScript. There is
 | `tools/sync-themes.py` | Regenerates `css/themes.css` from the game's themes |
 | `img/` | Logo and social preview image |
 | `404.html` | Page shown for missing URLs |
+| `facts.json` | Public ChocoNeko facts shared with the Discord bot and portfolio |
 
 To preview it, open `index.html` in a browser or serve the folder with any static file server.
+
+## Public facts file
+
+`facts.json` (served at https://sleepymiemoo.github.io/choconeko-site/facts.json) is the single source of public ChocoNeko facts. The website, the Discord bot and SleepyMie's portfolio all use it. It holds public-safe information only. When a fact changes, update `facts.json` and the matching site copy together, so the two always agree.
 
 ## Themes
 
