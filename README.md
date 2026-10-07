@@ -25,7 +25,7 @@ To preview it, open `index.html` in a browser or serve the folder with any stati
 
 ## Public facts file
 
-`facts.json` (served at https://sleepymiemoo.github.io/choconeko-site/facts.json) is the single source of public ChocoNeko facts. The website, the Discord bot and SleepyMie's portfolio all use it. It holds public-safe information only. When a fact changes, update `facts.json` and the matching site copy together, so the two always agree.
+`facts.json` (served at https://sleepymiemoo.github.io/choconeko-site/facts.json) is the single source of public ChocoNeko facts. The Discord bot and SleepyMie's portfolio read from it, and the website's copy mirrors it (the pages don't load it yet). It holds public-safe information only. When a fact changes, update `facts.json` and the matching site copy together, so the two always agree.
 
 ## Themes
 
