@@ -262,7 +262,7 @@
     var ratio2 = state.fx === "full" ? Math.min(window.devicePixelRatio || 1, 2) : 1;
     if (w === W && h === H && ratio2 === dpr && cv.width) { measureKeep(); return; }
     W = w; H = h;
-    if (ratio2 !== dpr || !sprites.chunk) { dpr = ratio2; buildSprites(); }
+    if (ratio2 !== dpr || !sprites.milk) { dpr = ratio2; buildSprites(); }
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     measureKeep();
     build();
