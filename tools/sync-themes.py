@@ -289,6 +289,18 @@ def site_colors(pal):
         focus, n = ensure(BRAND_BLUE, surfaces + [button, nav_active], 3.0, (0, 0, 0))
         notes.append(f"focus ring: brand blue {hexc(BRAND_BLUE)} darkened {n}% -> {hexc(focus)}")
 
+    # Soft decorative spots behind the hero text: a touch of the text colour on dark
+    # themes, cream (toward the elevated surface) on light ones. Kept only as strong as
+    # still lets text, muted text and accent ink pass AA on top of them.
+    toward, start = (text, 7) if dark else (elevated, 45)
+    for step in range(start, -1, -1):
+        glow = mix(deep, toward, step / 100)
+        if min(ratio(c, glow) for c in (text, muted, ink)) >= 4.5 + MARGIN:
+            break
+
+    # Light band that sweeps across the gold button on hover (text on it is checked below).
+    shine = mix(accent, (255, 255, 255), 0.55)
+
     nav_text = pal["navActiveText"]
     if ratio(nav_text, nav_active) < 4.5:
         nav_text, n = ensure(nav_text, [nav_active], 4.5, away)
@@ -304,6 +316,7 @@ def site_colors(pal):
         "nav-active": nav_active, "nav-active-text": nav_text, "border": border,
         "text": text, "muted": muted, "accent": accent, "accent-ink": ink,
         "on-accent": on_accent, "control-border": control, "edge": edge, "focus": focus,
+        "glow": glow, "shine": shine,
     }
     return v, dark, notes
 
@@ -318,7 +331,10 @@ def contrast_rows(v, dark):
         rows.append((f"muted on {bg}", ratio(v["muted"], v[bg]), 4.5))
     for bg in ("panel", "elevated", "deep", "button"):
         rows.append((f"link/accent ink on {bg}", ratio(v["accent-ink"], v[bg]), 4.5))
+    for fg in ("text", "muted", "accent-ink"):
+        rows.append((f"{fg} on glow (hero spots)", ratio(v[fg], v["glow"]), 4.5))
     rows.append(("text on accent (buttons, role pill)", ratio(v["on-accent"], v["accent"]), 4.5))
+    rows.append(("text on shine (gold button hover band)", ratio(v["on-accent"], v["shine"]), 4.5))
     for bg in ("panel", "elevated", "deep", "button", "nav-active"):
         rows.append((f"focus outline vs {bg}", ratio(v["focus"], v[bg]), 3.0))
     for bg in ("panel", "elevated", "deep", "button"):
@@ -377,7 +393,8 @@ def main(argv):
         "    accentGradient.Center -> --accent (the shared gold)",
         "  Derived by the site (adjusted only as far as WCAG AA needs):",
         "    --muted (textMuted), --accent-ink (links, wordmark), --on-accent, --control-border,",
-        "    --edge (outlines/shadows), --focus (focus outline), --theme-color (browser UI).",
+        "    --edge (outlines/shadows), --focus (focus outline), --glow (soft hero spots),",
+        "    --shine (hover band on gold buttons), --theme-color (browser UI).",
         f"  System (match device): dark -> {d['name']}, light -> {l['name']}.",
         "*/",
         "",

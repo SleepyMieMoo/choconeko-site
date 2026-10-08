@@ -10,7 +10,8 @@
     accentGradient.Center -> --accent (the shared gold)
   Derived by the site (adjusted only as far as WCAG AA needs):
     --muted (textMuted), --accent-ink (links, wordmark), --on-accent, --control-border,
-    --edge (outlines/shadows), --focus (focus outline), --theme-color (browser UI).
+    --edge (outlines/shadows), --focus (focus outline), --glow (soft hero spots),
+    --shine (hover band on gold buttons), --theme-color (browser UI).
   System (match device): dark -> Dark Choco, light -> Vanilla.
 */
 
@@ -37,6 +38,8 @@
   --control-border: #7B695E;
   --edge: #0B0807;
   --focus: #FFC800;
+  --glow: #2B231E;
+  --shine: #FFE68C;
   --text-rgb: 243 230 216;
   --accent-rgb: 255 200 0;
   --theme-color: #1C1410;
@@ -60,6 +63,8 @@
   --control-border: #B49985;
   --edge: #29190F;
   --focus: #FFC800;
+  --glow: #513828;
+  --shine: #FFE68C;
   --text-rgb: 255 244 230;
   --accent-rgb: 255 200 0;
   --theme-color: #442A1A;
@@ -83,6 +88,8 @@
   --control-border: #66666D;
   --edge: #040406;
   --focus: #FFC800;
+  --glow: #1D1D22;
+  --shine: #FFE68C;
   --text-rgb: 235 235 240;
   --accent-rgb: 255 200 0;
   --theme-color: #0E0E12;
@@ -106,6 +113,8 @@
   --control-border: #797C86;
   --edge: #797C86;
   --focus: #5477D9;
+  --glow: #ECEDF2;
+  --shine: #FFE68C;
   --text-rgb: 22 24 30;
   --accent-rgb: 255 200 0;
   --theme-color: #DCDEE8;
@@ -129,6 +138,8 @@
   --control-border: #7F6853;
   --edge: #7F6853;
   --focus: #4A69BF;
+  --glow: #EBDCC8;
+  --shine: #FFE68C;
   --text-rgb: 62 42 28;
   --accent-rgb: 255 200 0;
   --theme-color: #DAC6AC;
@@ -152,6 +163,8 @@
   --control-border: #85754C;
   --edge: #85754C;
   --focus: #5071CF;
+  --glow: #F0E7C8;
+  --shine: #FFE68C;
   --text-rgb: 72 58 28;
   --accent-rgb: 255 200 0;
   --theme-color: #E4D6A8;
@@ -175,6 +188,8 @@
   --control-border: #8E654B;
   --edge: #8E654B;
   --focus: #4B6AC2;
+  --glow: #F6DBC5;
+  --shine: #FFE68C;
   --text-rgb: 88 48 28;
   --accent-rgb: 255 200 0;
   --theme-color: #EEC4A2;
@@ -198,6 +213,8 @@
   --control-border: #93636D;
   --edge: #93636D;
   --focus: #4C6CC4;
+  --glow: #F2DBE1;
+  --shine: #FFE68C;
   --text-rgb: 78 32 42;
   --accent-rgb: 255 200 0;
   --theme-color: #E8C4CC;
@@ -221,6 +238,8 @@
   --control-border: #587D66;
   --edge: #587D66;
   --focus: #4F70CC;
+  --glow: #D3EADC;
+  --shine: #FFE68C;
   --text-rgb: 28 62 42;
   --accent-rgb: 255 200 0;
   --theme-color: #B8DCC6;
@@ -244,6 +263,8 @@
   --control-border: #637896;
   --edge: #657A98;
   --focus: #5173D1;
+  --glow: #DCE9F9;
+  --shine: #FFE68C;
   --text-rgb: 28 48 78;
   --accent-rgb: 255 200 0;
   --theme-color: #C8DCF4;
@@ -267,6 +288,8 @@
   --control-border: #776797;
   --edge: #776797;
   --focus: #4B6AC2;
+  --glow: #E4DCF6;
+  --shine: #FFE68C;
   --text-rgb: 48 32 78;
   --accent-rgb: 255 200 0;
   --theme-color: #D2C6EE;
@@ -292,6 +315,8 @@
     --control-border: #7F6853;
     --edge: #7F6853;
     --focus: #4A69BF;
+    --glow: #EBDCC8;
+    --shine: #FFE68C;
     --text-rgb: 62 42 28;
     --accent-rgb: 255 200 0;
     --theme-color: #DAC6AC;

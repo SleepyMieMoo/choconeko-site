@@ -10,6 +10,8 @@
   <meta name="theme-color" content="#DAC6AC" media="(prefers-color-scheme: light)">
   <!-- Apply the saved theme before CSS paints (see js/main.js) -->
   <script>(function(){var ok=" system dark-choco chocolate dark light vanilla lemon peach strawberry mint blueberry lavender ",t;try{t=localStorage.getItem("choconeko-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t&&ok.indexOf(" "+t+" ")>=0?t:"system")})();</script>
+  <!-- Apply saved effect and motion settings before first paint (see js/settings.js) -->
+  <script>(function(d){d.classList.add("js");var f,k,r,n=navigator,c=n.connection,m=function(q){try{return matchMedia(q).matches}catch(e){return false}};try{f=localStorage.getItem("choconeko-fx");k=localStorage.getItem("choconeko-touches");r=localStorage.getItem("choconeko-motion")}catch(e){}if(f!=="full"&&f!=="lite"&&f!=="off"){f=m("(max-width: 600px)")||n.hardwareConcurrency<=4||c&&c.saveData?"lite":"full";d.setAttribute("data-fx-auto",f)}d.setAttribute("data-fx",f);d.setAttribute("data-touches",k==="off"?"off":"on");d.setAttribute("data-motion",r==="reduce"||r!=="ok"&&m("(prefers-reduced-motion: reduce)")?"reduce":"ok")})(document.documentElement);</script>
   <meta property="og:title" content="ChocoNeko">
   <meta property="og:description" content="A chocolate-and-cat themed Roblox hub game. In development, coming soon.">
   <meta property="og:type" content="website">
@@ -39,9 +41,14 @@
             <li><a href="#links">Links</a></li>
           </ul>
         </nav>
-        <div class="theme-picker" hidden>
-          <label for="theme-select">Theme</label>
-          <span class="select-wrap"><select id="theme-select"><option value="system">System (match device)</option></select></span>
+        <div class="header-tools">
+          <div class="theme-picker" hidden>
+            <label for="theme-select">Theme</label>
+            <span class="select-wrap"><select id="theme-select"><option value="system">System (match device)</option></select></span>
+          </div>
+          <div class="settings">
+            <button type="button" id="settings-toggle" class="settings-toggle" aria-expanded="false" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M19.4 9.7 22.1 10.3 22.1 13.7 19.4 14.3 18.8 15.6 20.3 17.9 17.9 20.3 15.6 18.8 14.3 19.4 13.7 22.1 10.3 22.1 9.7 19.4 8.4 18.8 6.1 20.3 3.7 17.9 5.2 15.6 4.6 14.3 1.9 13.7 1.9 10.3 4.6 9.7 5.2 8.4 3.7 6.1 6.1 3.7 8.4 5.2 9.7 4.6 10.3 1.9 13.7 1.9 14.3 4.6 15.6 5.2 17.9 3.7 20.3 6.1 18.8 8.4Z M15.3 12a3.3 3.3 0 1 0-6.6 0 3.3 3.3 0 1 0 6.6 0Z"/></svg><span class="settings-text">Settings</span></button>
+          </div>
         </div>
       </div>
     </div>
@@ -139,5 +146,8 @@
 
   <script src="js/members.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/micro.js"></script>
+  <script src="js/fx.js"></script>
 </body>
 </html>

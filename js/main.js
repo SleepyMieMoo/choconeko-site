@@ -122,6 +122,14 @@
       var next = e.relatedTarget;
       if (next && !nav.contains(next) && next !== toggle) setOpen(false);
     });
+    // Close when the window grows back to the desktop layout, so the menu isn't
+    // unexpectedly open after shrinking again (idea from the portfolio's menu.js).
+    var small = window.matchMedia ? window.matchMedia("(max-width: 920px)") : null;
+    if (small) {
+      var onWidth = function () { if (!small.matches && isOpen()) setOpen(false); };
+      if (small.addEventListener) small.addEventListener("change", onWidth);
+      else if (small.addListener) small.addListener(onWidth);
+    }
   }
 
   // Footer year
